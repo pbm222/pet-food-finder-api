@@ -6,7 +6,7 @@ import com.jamk.pet.food.finder.api.admin.model.Role;
 import com.jamk.pet.food.finder.api.admin.model.User;
 import com.jamk.pet.food.finder.api.admin.model.UserDto;
 import com.jamk.pet.food.finder.api.admin.repository.UserRepository;
-import com.jamk.pet.food.finder.api.product.exception.ReviewNotFoundException;
+import com.jamk.pet.food.finder.api.portal.exception.ReviewNotFoundException;
 import lombok.AllArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
@@ -49,6 +49,11 @@ public class CustomUserService implements UserDetailsService {
     public UserDto findUserById(String id) {
         return userRepository.findById(id)
                 .map(userMapper::toUserDto)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+    }
+
+    public User findById(String id) {
+        return userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
     }
 

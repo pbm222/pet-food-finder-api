@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,6 +40,7 @@ public class UserController {
         return userService.searchUsers(id, username, name, surname, email, jobTitle, phoneNumber, isActive, roles, pageable);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity createUser(@RequestBody UserDto userDto) {
         if (userService.findByUsername(userDto.getUsername()).isPresent()) {
@@ -52,22 +54,26 @@ public class UserController {
         return ResponseEntity.ok("User successfully created.");
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'MODERATOR', 'USER')")
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUser(@PathVariable String id) {
         return ResponseEntity.ok(userService.findUserById(id));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'MODERATOR', 'USER')")
     @PutMapping("/{id}")
     public ResponseEntity<UserDto> updateUser(@PathVariable String id, @RequestBody UserDto userDto) {
         return ResponseEntity.ok(userService.updateUser(id, userDto));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     @PatchMapping("/{id}")
     public ResponseEntity setIsActive(@PathVariable String id, @RequestBody UserEnabledRequest request) {
         userService.setIsActive(id, request.getIsActive());
         return ResponseEntity.ok("Status updated for user with id: " + id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity deleteUser(@PathVariable String id) {
         userService.deleterUser(id);

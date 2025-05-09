@@ -1,10 +1,10 @@
 package com.jamk.pet.food.finder.api.admin.service;
 
 import com.jamk.pet.food.finder.api.admin.model.ProductStatisticsDto;
-import com.jamk.pet.food.finder.api.product.model.Product;
-import com.jamk.pet.food.finder.api.product.repository.RetailerRepository;
-import com.jamk.pet.food.finder.api.product.service.ProductService;
-import com.jamk.pet.food.finder.api.product.service.ReviewService;
+import com.jamk.pet.food.finder.api.portal.model.ProductDto;
+import com.jamk.pet.food.finder.api.portal.repository.RetailerRepository;
+import com.jamk.pet.food.finder.api.portal.service.ProductService;
+import com.jamk.pet.food.finder.api.portal.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +25,6 @@ public class StatisticsService {
         dto.setBestRatedProducts(productService.getThreeBestRated());
         dto.setMostReviewedProduct(getMostReviewedProduct());
         dto.setNumberOfproductsPerCharacteristic(productService.getNumberOfProductsByCharacteristic());
-        //dto.setProductsPerRetailer(productService);
 
         dto.setNumberOfReviews(reviewService.getTotalReviews());
         dto.setNumberOfReviewsMonth(reviewService.getNumberOfReviewsThisMonth());
@@ -37,7 +36,7 @@ public class StatisticsService {
         return dto;
     }
 
-    private Product getMostReviewedProduct() {
+    private ProductDto getMostReviewedProduct() {
         return reviewService.getMostReviewedProductId()
                 .map(productService::getById)
                 .orElse(null);

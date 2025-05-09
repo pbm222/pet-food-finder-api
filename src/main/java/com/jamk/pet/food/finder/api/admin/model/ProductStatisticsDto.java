@@ -1,6 +1,6 @@
 package com.jamk.pet.food.finder.api.admin.model;
 
-import com.jamk.pet.food.finder.api.product.model.Product;
+import com.jamk.pet.food.finder.api.portal.model.ProductDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,8 +16,8 @@ public class ProductStatisticsDto {
     private Long numberOfReviewsMonth;
     private Long numberOfInactiveReviews;
     private Long numberOfInactiveUsers;
-    private Product mostReviewedProduct;
-    private List<Product> bestRatedProducts;
+    private ProductDto mostReviewedProduct;
+    private List<ProductDto> bestRatedProducts;
     private Map<String, Integer> numberOfproductsPerCharacteristic;
     private Map<String, Integer> productsPerRetailer;
 }
